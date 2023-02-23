@@ -30,9 +30,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::get('students', [\App\Http\Controllers\StudentController::class, 'show'])->middleware('permission:view grades');
-    Route::get('add-student', [\App\Http\Controllers\StudentController::class, 'create']);
-    Route::post('add-student', [\App\Http\Controllers\StudentController::class, 'store']);
 });
 
 Route::middleware('auth')->prefix('student')->group(function () {
@@ -46,7 +43,15 @@ Route::middleware('auth')->prefix('student')->group(function () {
 });
 
 Route::middleware('auth')->prefix('access')->group(function () {
+
+    Route::get('students', [\App\Http\Controllers\StudentController::class, 'show'])->middleware('permission:view grades');
+    Route::get('add-student', [\App\Http\Controllers\StudentController::class, 'create']);
+    Route::post('add-student', [\App\Http\Controllers\StudentController::class, 'store']);
     
+    Route::get('lecturers', [\App\Http\Controllers\LecturerController::class, 'index']);
+    Route::get('add-lecturer', [\App\Http\Controllers\LecturerController::class, 'create']);
+    Route::post('add-lecturer', [\App\Http\Controllers\LecturerController::class, 'store']);
+
     Route::get('departments', [\App\Http\Controllers\DepartmentController::class, 'index']);
     Route::post('update-department', [\App\Http\Controllers\DepartmentController::class, 'update']);
     Route::post('add-department', [\App\Http\Controllers\DepartmentController::class, 'store']);

@@ -22,13 +22,13 @@ class StudentController extends Controller
     {
         $students = Student::join('users', 'students.user_id', '=', 'users.id')
             ->get();
-        return view('students', compact('students'));
+        return view('admin.students', compact('students'));
     }
 
     //get add student page
     public function create()
     {
-        return view('add-student');
+        return view('admin.add-student');
     }
 
     //store student
@@ -49,7 +49,7 @@ class StudentController extends Controller
                 'dob' => $request->dob
             ]
         );
-        return redirect('/students');
+        return redirect('/access/students');
 
     }
 
