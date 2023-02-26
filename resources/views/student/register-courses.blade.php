@@ -26,7 +26,7 @@
                 <tbody>
                     @foreach ($courses as $course)
                         <tr>
-                            <td><input type="checkbox" name="courses[]" value="{{ $course->course_id }}"></td>
+                            <td><input type="checkbox" name="courses[]" value="{{ $course->course_code }}"></td>
                             <td>{{ $course->course_code }}</td>
                             <td>{{ $course->course_name }}</td>
                         </tr>

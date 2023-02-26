@@ -34,19 +34,19 @@ class HomeController extends Controller
         if (Auth::user()->hasRole('Student')) {
             // code to be executed if the user has the role of "Student"
 
-            $student_id = Student::join('users', 'users.id', '=', 'students.user_id')
-                ->where('id', Auth::user()->id)->first()->student_id;
+            $student_regi_no = Student::join('users', 'users.id', '=', 'students.user_id')
+                ->where('users.id', Auth::user()->id)->first()->student_regi_no;
             $semester_id = Semester::where('s_is_current', 1)->first()->semester_id;
 
             $registered = DB::table('student_enrollments')
-                ->where('student_id', $student_id)
+                ->where('student_regi_no', $student_regi_no)
                 ->where('semester_id', $semester_id)
                 ->exists();
 
             $registered_courses = DB::table('student_enrollments')
-                ->join('students', 'students.student_id', '=', 'student_enrollments.student_id')
+                ->join('students', 'students.student_regi_no', '=', 'student_enrollments.student_regi_no')
                 ->join('users', 'students.user_id', '=', 'users.id')
-                ->join('courses', 'courses.course_id', '=', 'student_enrollments.course_id')
+                ->join('courses', 'courses.course_code', '=', 'student_enrollments.course_code')
                 ->join('semesters', 'semesters.semester_id', '=', 'student_enrollments.semester_id')
                 ->where('users.id', Auth::user()->id)
                 ->where('semesters.s_is_current', 1)
@@ -62,18 +62,13 @@ class HomeController extends Controller
             // return $student;
 
             $balance = DB::table('students')
-            ->join('users', 'students.user_id', '=', 'users.id')
-            ->join('undergraduate_students', 'students.undergraduate_student_id', '=', 'undergraduate_students.undergraduate_student_id')
-            ->join('student_invoices', 'student_invoices.undergraduate_student_id', '=', 'undergraduate_students.undergraduate_student_id')
-            ->join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-            ->join('academic_years', 'invoices.academic_year_id', '=', 'academic_years.academic_year_id')
-            ->join(DB::raw('(SELECT student_id, invoice_id, SUM(receipt_amount) as receipt_amount FROM receipts GROUP BY student_id, invoice_id) receipts'), function ($join) {
-                $join->on('receipts.student_id', '=', 'students.student_id')
-                    ->on('receipts.invoice_id', '=', 'invoices.invoice_id');
-            })
+            ->Join('users', 'students.user_id', '=', 'users.id')
+            ->leftJoin('student_invoices', 'students.student_regi_no', '=', 'student_invoices.student_regi_no')
+            ->leftJoin('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
+            ->leftJoin(DB::raw('(SELECT student_regi_no, SUM(receipt_amount) AS total_received FROM receipts GROUP BY student_regi_no) AS receipts_total'), 'students.student_regi_no', '=', 'receipts_total.student_regi_no')
+            ->select('users.name', 'students.year_of_study', 'students.student_regi_no', DB::raw('SUM(invoices.invoice_amount) - COALESCE(receipts_total.total_received, 0) AS balance'))
+            ->groupBy('students.student_regi_no', 'users.name', 'students.year_of_study')
             ->where('students.user_id', Auth::user()->id)
-            ->groupBy(['students.student_id'])
-            ->selectRaw('SUM(invoices.invoice_amount) - SUM(receipts.receipt_amount) as balance')
             ->first()
             ->balance;
 

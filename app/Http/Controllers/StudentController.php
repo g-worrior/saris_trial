@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Invoice;
 use App\Models\Receipt;
 use App\Models\Student;
 use App\Models\Semester;
@@ -56,63 +57,9 @@ class StudentController extends Controller
     // fees statement
     public function get_statement()
     {
-        // $invoices = Student::join('cohorts', 'students.cohort_id', '=', 'cohorts.cohort_id')
-        // ->join('student_invoices', 'cohorts.cohort_id', '=', 'student_invoices.cohort_id')
-        // ->join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-        // ->leftjoin('receipts', 'invoices.invoice_id', '=', 'receipts.invoice_id')
-        // ->where('students.student_id', '1')
-        // ->select('students.student_id', DB::raw('SUM(invoices.invoice_amount) - COALESCE(SUM(receipts.receipt_amount), 0) as balance'))
-        // ->GROUPBY('students.student_id')
-        // ->get();
+        $student_regi_no = Student::where('user_id', Auth::user()->id)->first()->student_regi_no;
 
-
-        $balance = DB::table('students')
-            ->join('users', 'students.user_id', '=', 'users.id')
-            ->join('undergraduate_students', 'students.undergraduate_student_id', '=', 'undergraduate_students.undergraduate_student_id')
-            ->join('student_invoices', 'student_invoices.undergraduate_student_id', '=', 'undergraduate_students.undergraduate_student_id')
-            ->join('invoices', 'student_invoices.invoice_id', '=', 'invoices.invoice_id')
-            ->join('academic_years', 'invoices.academic_year_id', '=', 'academic_years.academic_year_id')
-            ->join(DB::raw('(SELECT student_id, invoice_id, SUM(receipt_amount) as receipt_amount FROM receipts GROUP BY student_id, invoice_id) receipts'), function ($join) {
-                $join->on('receipts.student_id', '=', 'students.student_id')
-                    ->on('receipts.invoice_id', '=', 'invoices.invoice_id');
-            })
-            ->where('students.user_id', Auth::user()->id)
-            ->groupBy(['students.student_id'])
-            ->selectRaw('SUM(invoices.invoice_amount) - SUM(receipts.receipt_amount) as balance')
-            ->first()
-            ->balance;
-
-
-        // $studentInvoices = DB::table('students')
-        //     ->join('student_invoices', 'students.cohort_id', '=', 'student_invoices.cohort_id')
-        //     ->join('invoices', 'invoices.invoice_id', '=', 'student_invoices.invoice_id')
-        //     ->leftjoin('receipts', 'invoices.invoice_id', '=', 'receipts.invoice_id')
-        //     ->join('academic_years', 'academic_years.academic_year_id', '=', 'invoices.academic_year_id')
-        //     ->where('students.user_id', Auth::user()->id)
-        //     ->get([
-        //         'invoices.*',
-        //         'receipts.*',
-        //         DB::raw("CONCAT(YEAR(academic_years.a_start_year), '/', YEAR(academic_years.a_end_year)) AS academic_year")
-        //     ]);
-
-        $studentInvoices = DB::table('students')
-            ->join('student_invoices', 'students.undergraduate_student_id', '=', 'student_invoices.undergraduate_student_id')
-            ->join('invoices', 'invoices.invoice_id', '=', 'student_invoices.invoice_id')
-            ->leftjoin('receipts', function ($join) {
-                $join->on('receipts.invoice_id', '=', 'invoices.invoice_id')
-                    ->on('receipts.student_id', '=', 'students.student_id');
-            })
-            ->join('academic_years', 'academic_years.academic_year_id', '=', 'invoices.academic_year_id')
-            ->where('students.user_id', Auth::user()->id)
-            ->get([
-                'invoices.*',
-                'receipts.*',
-                DB::raw("CONCAT(YEAR(academic_years.a_start_year), '/', YEAR(academic_years.a_end_year)) AS academic_year")
-            ]);
-
-
-        // return $studentInvoices;
-        return view('student.fees-statment', compact('balance', 'studentInvoices'));
+        return view('student.fees-statment', compact('student_regi_no'));
     }
 
     public function get_academic_profile()
@@ -178,13 +125,13 @@ class StudentController extends Controller
 
         $current_semester = Semester::where('s_is_current', 1)->first()->semester_name;
 
-        $student_id = Student::join('users', 'users.id', '=', 'students.user_id')
-            ->where('id', Auth::user()->id)->first()->student_id;
+        $student_regi_no = Student::join('users', 'users.id', '=', 'students.user_id')
+            ->where('users.id', Auth::user()->id)->first()->student_regi_no;
 
         $semester_id = Semester::where('s_is_current', 1)->first()->semester_id;
 
         $registered = DB::table('student_enrollments')
-            ->where('student_id', $student_id)
+            ->where('student_regi_no', $student_regi_no)
             ->where('semester_id', $semester_id)
             ->exists();
         if ($registered) {
@@ -206,27 +153,28 @@ class StudentController extends Controller
 
     public function register_courses(Request $request)
     {
-        $student_id = Student::join('users', 'users.id', '=', 'students.user_id')
-            ->where('id', Auth::user()->id)->first()->student_id;
+        // return $request;
+        $student_regi_no = Student::join('users', 'users.id', '=', 'students.user_id')
+            ->where('id', Auth::user()->id)->first()->student_regi_no;
         $semester_id = Semester::where('s_is_current', 1)->first()->semester_id;
 
         $validatedData = $request->validate([
             'courses' => 'required|array',
-            'courses.*' => 'required|integer',
+            'courses.*' => 'required|string',
         ]);
 
         // Get the validated data
         $courses = $validatedData['courses'];
 
         // Insert the data into the database
-        foreach ($courses as $course_id) {
+        foreach ($courses as $course_code) {
             $enrollment = new StudentEnrollment();
-            $enrollment->student_id = $student_id;
-            $enrollment->course_id = $course_id;
+            $enrollment->student_regi_no = $student_regi_no;
+            $enrollment->course_code = $course_code;
             $enrollment->semester_id = $semester_id;
             $enrollment->save();
         }
 
-        redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Registered Successfuly');
     }
 }

@@ -37,7 +37,7 @@
                                 {{ __('You are logged in!') }}
                             </p>
                             <!-- Small boxes (Stat box) -->
-                            @role('Admin')
+                            @role('Admin|Accounts')
                                 <div class="row">
                                     <div class="col-lg-3 col-6">
                                         <!-- small box -->
@@ -222,25 +222,25 @@
                                 @if ($registered)
                                     <h5 class="btn btn-success"> Already Registered <i class="fa fa-check"></i></h5>
                                     <ul class="list-group">
-                                        @foreach ($registered_courses as $course )
-                                        <li class="list-group-item">{{ $course->course_name }}</li>
+                                        @foreach ($registered_courses as $course)
+                                            <li class="list-group-item">{{ $course->course_name }}</li>
                                         @endforeach
-                                        
-                                      </ul>
+
+                                    </ul>
                                 @else
-                                   <!-- Button trigger modal -->
-                                <a href="/student/register" class="btn btn-secondary">
-                                    Register here!
-                                </a> 
+                                    <!-- Button trigger modal -->
+                                    <a href="/student/register" class="btn btn-secondary">
+                                        Register here!
+                                    </a>
                                 @endif
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
             @endrole
-        </div>
-    </div><!-- /.container-fluid -->
+
+        </div><!-- /.container-fluid -->
 
     </div>
     <!-- /.content -->
@@ -252,11 +252,11 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
     </script>
     @role('Student')
-    <script>
-        const balance = {{ $balance }}
-        const result = balance.toLocaleString('en-US');
-        document.getElementById("balance").innerHTML = "MK " + result;
-    </script>
+        <script>
+            const balance = {{ $balance }}
+            const result = balance.toLocaleString('en-US');
+            document.getElementById("balance").innerHTML = "MK " + result;
+        </script>
     @endrole
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

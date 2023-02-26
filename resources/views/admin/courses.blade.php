@@ -23,8 +23,10 @@
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
                                 <li class="breadcrumb-item active">Courses</li>
                                 <li class="breadcrumb-item">
-                                    <a style="position:relative; bottom:4px; left:2px;" class="btn btn-primary"
-                                        href="/add-course"> <i class='fa fa-plus-circle'></i>Add Course</a>
+                                    <button style="position:relative; bottom:4px; left:2px;" type="button"
+                                        class="btn btn-primary" data-toggle="modal" data-target="#add-course">
+                                        <i class='fa fa-plus-circle'></i> Add Course
+                                    </button>
                                 </li>&nbsp;
                             </ol>
                         </div>
@@ -47,16 +49,8 @@
                             <div>
                                 <form name="StudentClass" id="StudentClass" method="post" action="">
                                     <div class="row">
-                                        <div class="text-start">
-                                            <label class="label label-default">Select Class Name</label>
-                                        </div>
+
                                         &nbsp;&nbsp;
-                                        <div class="" style="position:relative; bottom:5px; left:2px;">
-                                            <select name="ClassID" id="ClassID" class="form-control">
-                                                <option value="all">All</option>
-                                                <option value="1">trghet</option>
-                                            </select>
-                                        </div>
                                         <div class="ml-auto" style="position:relative; bottom:5px;">
                                             <a class="btn btn-secondary" href=""> <i class="fa fa-file-import"></i>
                                                 Import</a>
@@ -116,32 +110,49 @@
         </div>
         <!-- /.container-fluid -->
 
-        <!-- View student Modal -->
-        <div class="modal fade" id="viewstudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        <!-- Add Course Modal -->
+        <div class="modal fade" id="add-course" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Course</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
+                    <form action="/access/add-course" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="col form-group">
+                                <label for="">Course Code</label>
+                                <input type="text" name="course_code" class="form-control"
+                                    placeholder="Enter Course Code">
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Course Name</label>
+                                <input type="text" name="course_name" class="form-control"
+                                    placeholder="Enter Course Name">
+                            </div>
+                            <div class="col form-group">
+                                <label for="">Credit Hours</label>
+                                <input type="text" name="credit_hours" class="form-control"
+                                    placeholder="Enter Credit Hours">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Add Course</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- End of view student modal -->
+        <!-- End of Add Course modal -->
 
         <!-- Delete student Modal -->
-        <div class="modal fade" id="deletestudent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
+        <div class="modal fade" id="deletestudent" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -167,7 +178,26 @@
 @endsection
 
 @section('scripts')
-     <!-- DataTables  & Plugins -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    @if ($message = Session::get('success'))
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+
+            toastr.success('{{ $message }}')
+        </script>
+    @endif
+    <!-- DataTables  & Plugins -->
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -186,7 +216,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print",]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

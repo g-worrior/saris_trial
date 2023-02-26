@@ -22,11 +22,13 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
                                 <li class="breadcrumb-item active">Semesters</li>
-                                <li class="breadcrumb-item">
-                                    <a style="position:relative; bottom:4px; left:2px;" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#add-semester"> <i class='fa fa-plus-circle'></i>
-                                        Add Semester</a>
-                                </li>&nbsp;
+                                @role('Admin')
+                                    <li class="breadcrumb-item">
+                                        <a style="position:relative; bottom:4px; left:2px;" class="btn btn-primary"
+                                            data-toggle="modal" data-target="#add-semester"> <i class='fa fa-plus-circle'></i>
+                                            Add Semester</a>
+                                    </li>&nbsp;
+                                @endrole
                             </ol>
                         </div>
                     </div>

@@ -103,6 +103,7 @@
                             <h2 style="position: relative; top:5px; left:10px;">ACCOUNT INFORMATION</h2>
                         </div>
                         <div class="card-body">
+                            @livewire('get-roles')
                             <div class="row">
                                 <div class="col">
                                     <label for="">Email</label>
@@ -126,6 +127,7 @@
                     </div>
                 </div>
             </div>
+       
             <div class="text-center">
                 <input class="btn btn-secondary" type="submit" value="Submit">
             </div>

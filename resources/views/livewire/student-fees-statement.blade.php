@@ -1,7 +1,6 @@
 <div class="d-flex flex-column align-items-center">
     <h4>Skyline University</h4>
-    <img src="/images/AdminLTELogo.png" alt="Institution logo"
-        class="mb-3" style="max-width: 100px;">
+    <img src="/images/AdminLTELogo.png" alt="Institution logo" class="mb-3" style="max-width: 100px;">
     <address>
         123 Main Street<br>
         Zomba, Malawi<br>
@@ -29,22 +28,22 @@
 </ul>
 <div>
     <div class="container">
-        <div class="row justify-content-end">
-            <div class="col-auto">
-                <div class="row">
-                    <div class="col-5 text-right">
-                        Total:
-                    </div>
-                    <div class="col-9 text-right">
-                        MK{{ $balance }}
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col">
+                <h4>Total:</h4>
+            </div>
+            <div class="col float-sm-right breadcrumb" id="fees">
             </div>
         </div>
-    </div>
 
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+        <!-- Add print button here -->
+        <button class="btn btn-primary" onclick="window.print()">Print Statement</button>
+    </div>
 </div>
-<div class="d-flex justify-content-end mb-3">
-    <!-- Add print button here -->
-    <button class="btn btn-primary" onclick="window.print()">Print Statement</button>
-</div>
+<script>
+    const balance = {{ $balance }}
+    const result = balance.toLocaleString('en-US');
+    document.getElementById("fees").innerHTML = "MK " + result;
+</script>

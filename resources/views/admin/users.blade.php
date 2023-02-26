@@ -8,6 +8,16 @@
                 <div class="col-sm-6">
                     <h1 class="m-0">{{ __('Users') }}</h1>
                 </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item">
+                            <a style="position:relative; bottom:4px; left:2px;" class="btn btn-primary"
+                                href="/access/add-user"> <i class='fa fa-plus-circle'></i>Add User</a>
+                        </li>&nbsp;
+                    </ol>
+                </div>
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -34,20 +44,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($users as $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                    </tr>
-                                @endforeach
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                         <!-- /.card-body -->
 
-                        <div class="card-footer clearfix">
-                            {{ $users->links() }}
-                        </div>
+
                     </div>
 
                 </div>
