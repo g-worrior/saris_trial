@@ -58,7 +58,9 @@
                                         <th scope="col">Academic Start Date </th>
                                         <th scope="col">Academic End Date</th>
                                         <th scope="col">Academic Year</th>
-                                        <th scope="col">Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,41 +72,39 @@
                                             <td>{{ $academic_year->a_start_year }}</td>
                                             <td>{{ $academic_year->a_end_year }}</td>
                                             <td>{{ $academic_year->academic_year }}</td>
-                                            <td>
-                                                {{-- <a href="">
-                                                    <li class="fa fa-eye"></li>
-                                                </a> --}}
-                                                <a href="" data-toggle="modal"
-                                                    data-target="#edit-academic-year-{{ $academic_year->academic_year_id }}"
-                                                    wire:click="$set('academic_yearid', $academic_year->academic_year_id)">
-                                                    <li class="fa fa-edit"></li>
-                                                </a>
-                                                {{-- <a href="">
-                                                    <li class="fa fa-trash"></li>
-                                                </a> --}}
-                                            </td>
+                                            @role('Admin')
+                                                <td>
+                                                    <a href="" data-toggle="modal"
+                                                        data-target="#edit-academic-year-{{ $academic_year->academic_year_id }}"
+                                                        wire:click="$set('academic_yearid', $academic_year->academic_year_id)">
+                                                        <li class="fa fa-edit"></li>
+                                                    </a>
+                                                </td>
+                                            @endrole
 
                                         </tr>
-                                        <!-- Edit academic year Modal -->
-                                        <div class="modal fade"
-                                            id="edit-academic-year-{{ $academic_year->academic_year_id }}" tabindex="-1"
-                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Academic
-                                                            Year</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    @livewire('edit-academic-year', ['academicyearId' => $academic_year->academic_year_id])
+                                        @role('Admin')
+                                            <!-- Edit academic year Modal -->
+                                            <div class="modal fade"
+                                                id="edit-academic-year-{{ $academic_year->academic_year_id }}" tabindex="-1"
+                                                role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Edit Academic
+                                                                Year</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        @livewire('edit-academic-year', ['academicyearId' => $academic_year->academic_year_id])
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- End of edit academic year modal -->
+                                            <!-- End of edit academic year modal -->
+                                        @endrole
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -113,7 +113,9 @@
                                         <th scope="col">Academic Start Date </th>
                                         <th scope="col">Academic End Date</th>
                                         <th scope="col">Academic Year</th>
-                                        <th scope="col">Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                     </tr>
                                 </tfoot>
@@ -128,46 +130,43 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+        @role('Admin')
+            <!--add academic year modal -->
+            <div class="modal fade" id="add-department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Academic Year</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/access/add-academic-year" method="post">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col form-group">
+                                    <label for="">Start Date</label>
+                                    <input class="form-control" type="date" name="start_date" id=""
+                                        placeholder="Start Date of academic year">
+                                </div>
+                                <div class="col form-group">
+                                    <label for="">End Date</label>
+                                    <input class="form-control" type="date" name="end_date" id=""
+                                        placeholder="End date of academic year">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
 
-        <!--add academic year modal -->
-        <div class="modal fade" id="add-department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add Academic Year</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
-                    <form action="/access/add-academic-year" method="post">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="col form-group">
-                                <label for="">Start Date</label>
-                                <input class="form-control" type="date" name="start_date" id=""
-                                    placeholder="Start Date of academic year">
-                            </div>
-                            <div class="col form-group">
-                                <label for="">End Date</label>
-                                <input class="form-control" type="date" name="end_date" id=""
-                                    placeholder="End date of academic year">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-
                 </div>
             </div>
-        </div>
-        <!-- add academic year modal  -->
-
-
-
-
+            <!-- add academic year modal  -->
+        @endrole
     </section>
 @endsection
 

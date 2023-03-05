@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-    {!! Toastr::message() !!}
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -23,12 +22,14 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
                                 <li class="breadcrumb-item active">Departments</li>
-                                <li class="breadcrumb-item">
-                                    <button style="position:relative; bottom:4px; left:2px;" type="button"
-                                        class="btn btn-primary" data-toggle="modal" data-target="#add-department">
-                                        <i class='fa fa-plus-circle'></i> Add Department
-                                    </button>
-                                </li>&nbsp;
+                                @role('Admin')
+                                    <li class="breadcrumb-item">
+                                        <button style="position:relative; bottom:4px; left:2px;" type="button"
+                                            class="btn btn-primary" data-toggle="modal" data-target="#add-department">
+                                            <i class='fa fa-plus-circle'></i> Add Department
+                                        </button>
+                                    </li>&nbsp;
+                                @endrole
                             </ol>
                         </div>
                     </div>
@@ -56,7 +57,9 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Department Name</th>
-                                        <th scope="col">Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,47 +69,47 @@
                                             <td>{{ ++$key }}</td>
                                             <td class="edit_id" hidden>{{ $department->department_id }}</td>
                                             <td class="edit_name">{{ $department->department_name }}</td>
-                                            <td>
-                                                <a class="edit-button" href="" data-toggle="modal"
-                                                    data-target="#edit-department-{{ $department->department_id }}"
-                                                    wire:click="$set('departmentId', $department->department_id)">
-                                                    <i class='fa fa-edit'></i>
-                                                </a>
-                                                {{-- <a href="" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#delete-department">
-                                                    <i class='fa fa-trash'></i>
-                                                </a> --}}
-
-                                            </td>
-
+                                            @role('Admin')
+                                                <td>
+                                                    <a class="edit-button" href="" data-toggle="modal"
+                                                        data-target="#edit-department-{{ $department->department_id }}"
+                                                        wire:click="$set('departmentId', $department->department_id)">
+                                                        <i class='fa fa-edit'></i>
+                                                    </a>
+                                                </td>
+                                            @endrole
                                         </tr>
-                                        <!-- Edit department Modal -->
-                                        <div class="modal fade" id="edit-department-{{ $department->department_id }}"
-                                            tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                            aria-hidden="true">
-                                            <div class="modal-dialog modal-fullscreen" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Department
-                                                        </h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    @livewire('edit-department', ['departmentId' => $department->department_id])
+                                        @role('Admin')
+                                            <!-- Edit department Modal -->
+                                            <div class="modal fade" id="edit-department-{{ $department->department_id }}"
+                                                tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog modal-fullscreen" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Edit Department
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        @livewire('edit-department', ['departmentId' => $department->department_id])
 
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- End of edit department modal -->
+                                            <!-- End of edit department modal -->
+                                        @endrole
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th>#</th>
                                         <th>Department Name</th>
-                                        <th>Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                 </tfoot>
                             </table>
@@ -120,63 +123,61 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-
-        <!--add department modal -->
-        <div class="modal fade" id="add-department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Add Department</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="/access/add-department" method="post">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="col form-group">
-                                <label for="">Department Name</label>
-                                <input class="form-control" type="text" name="department" id=""
-                                    placeholder="Department name">
+        @role('Admin')
+            <!--add department modal -->
+            <div class="modal fade" id="add-department" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Add Department</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/access/add-department" method="post">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col form-group">
+                                    <label for="">Department Name</label>
+                                    <input class="form-control" type="text" name="department" id=""
+                                        placeholder="Department name">
+                                </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- add department modal  -->
+
+            <!-- Delete department Modal -->
+            <div class="modal fade" id="delete-department" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-        <!-- add department modal  -->
-
-
-        <!-- Delete department Modal -->
-        <div class="modal fade" id="delete-department" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ...
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- End of delete department modal -->
-
-
+            <!-- End of delete department modal -->
+        @endrole
     </section>
 @endsection
 

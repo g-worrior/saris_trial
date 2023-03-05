@@ -48,18 +48,9 @@
                             <div>
                                 <form name="StudentClass" id="StudentClass" method="post" action="">
                                     <div class="row">
-                                        <div class="text-start">
-                                            <label class="label label-default">Select Class Name</label>
-                                        </div>
-                                        &nbsp;&nbsp;
-                                        <div class="" style="position:relative; bottom:5px; left:2px;">
-                                            <select name="ClassID" id="ClassID" class="form-control">
-                                                <option value="all">All</option>
-                                                <option value="1">trghet</option>
-                                            </select>
-                                        </div>
+                                        
                                         <div class="ml-auto" style="position:relative; bottom:5px;">
-                                            <a class="btn btn-secondary" href=""> <i class="fa fa-file-import"></i>
+                                            <a class="btn btn-secondary" href="" data-toggle="modal" data-target="#importStudents"> <i class="fa fa-file-import"></i>
                                                 Import</a>
                                         </div>
                                     </div>
@@ -169,7 +160,37 @@
                 <!-- /.col -->
             </div>
             <!-- /.row -->
+
+             <!--Import students modal -->
+        <div class="modal fade" id="importStudents" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Import Students</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/access/" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="col form-group">
+                            <label for="">Import CSV File</label>
+                            <input class="form-control" type="file" name="cvs" id="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+
+            </div>
         </div>
+    </div>
+             <!--Import students modal -->
+            </div>
         <!-- /.container-fluid -->
 
     </section>

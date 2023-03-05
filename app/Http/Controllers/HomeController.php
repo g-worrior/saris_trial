@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Semester;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,9 +83,19 @@ class HomeController extends Controller
                 )
             );
         } else {
-
+            $countStudents = User::role('Student')->count();
+            $countLecturers = User::role('Lecturer')->count();
+            $countMaleStudents = User::role('Student')->join('students','students.user_id', '=', 'users.id')->where('gender', 'Male')->count();
+            $countFemaleStudents = User::role('Student')->join('students','students.user_id', '=', 'users.id')->where('gender', 'Female')->count();
+            
             return view(
-                'home'
+                'home',
+                compact([
+                    'countStudents',
+                    'countLecturers',
+                    'countMaleStudents',
+                    'countFemaleStudents'
+                ])
             );
         }
 

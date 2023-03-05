@@ -22,12 +22,14 @@
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
                                 <li class="breadcrumb-item active">Courses</li>
-                                <li class="breadcrumb-item">
-                                    <button style="position:relative; bottom:4px; left:2px;" type="button"
-                                        class="btn btn-primary" data-toggle="modal" data-target="#add-course">
-                                        <i class='fa fa-plus-circle'></i> Add Course
-                                    </button>
-                                </li>&nbsp;
+                                @role('Admin')
+                                    <li class="breadcrumb-item">
+                                        <button style="position:relative; bottom:4px; left:2px;" type="button"
+                                            class="btn btn-primary" data-toggle="modal" data-target="#add-course">
+                                            <i class='fa fa-plus-circle'></i> Add Course
+                                        </button>
+                                    </li>&nbsp;
+                                @endrole
                             </ol>
                         </div>
                     </div>
@@ -45,21 +47,22 @@
                 <div class="col-12">
 
                     <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <form name="StudentClass" id="StudentClass" method="post" action="">
-                                    <div class="row">
-
-                                        &nbsp;&nbsp;
-                                        <div class="ml-auto" style="position:relative; bottom:5px;">
-                                            <a class="btn btn-secondary" href=""> <i class="fa fa-file-import"></i>
-                                                Import</a>
+                        @role('Admin')
+                            <div class="card-header">
+                                <div>
+                                    <form name="StudentClass" id="StudentClass" method="post" action="">
+                                        <div class="row">
+                                            &nbsp;&nbsp;
+                                            <div class="ml-auto" style="position:relative; bottom:5px;">
+                                                <a class="btn btn-secondary" href=""> <i class="fa fa-file-import"></i>
+                                                    Import</a>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                </form>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @endrole
+
                         <!-- /.card-header -->
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
@@ -69,7 +72,9 @@
                                         <th scope="col">Course Code</th>
                                         <th scope="col">Course Name</th>
                                         <th scope="col">Credit Hous</th>
-                                        <th scope="col">Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,13 +84,15 @@
                                             <td>{{ $course->course_code }}</td>
                                             <td>{{ $course->course_name }}</td>
                                             <td>{{ $course->credit_hours }}</td>
-                                            <td>
-                                                <div>
-                                                    <a href="" style="color: red" class="fa fa-trash"
-                                                        data-toggle="modal" data-target="#deletestudent"></a>
-                                                    <a href="" class="fa fa-edit"></a>
-                                                </div>
-                                            </td>
+                                            @role('Admin')
+                                                <td>
+                                                    <div>
+                                                        <a href="" style="color: red" class="fa fa-trash"
+                                                            data-toggle="modal" data-target="#deletestudent"></a>
+                                                        <a href="" class="fa fa-edit"></a>
+                                                    </div>
+                                                </td>
+                                            @endrole
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -95,7 +102,9 @@
                                         <th scope="col">Course Code</th>
                                         <th scope="col">Course Name</th>
                                         <th scope="col">Credit Hous</th>
-                                        <th scope="col">Action</th>
+                                        @role('Admin')
+                                            <th scope="col">Action</th>
+                                        @endrole
                                     </tr>
                                 </tfoot>
                             </table>

@@ -296,6 +296,14 @@
                  </a>
              </li>
              <li class="nav-item">
+                <a href="/access/courses" class="nav-link">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        {{ __('Courses') }}
+                    </p>
+                </a>
+            </li>
+             <li class="nav-item">
                  <a href="/access/my-courses" class="nav-link">
                      <i class="nav-icon fas fa-book"></i>
                      <p>

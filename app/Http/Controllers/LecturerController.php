@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assessment;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lecturer;
@@ -86,6 +87,11 @@ class LecturerController extends Controller
         $course_code = Crypt::decrypt($encrypted_code);
         $course = Course::where('course_code', $course_code)->first();
 
+        $assessments = Assessment::Join('semesters', 'semesters.semester_id', '=', 'assessments.semester_id')
+            ->where('course_code', $course_code)
+            ->where('semesters.s_is_current', 1)
+            ->get();
+
         $students = DB::table('students')
             ->join('users', 'students.user_id', '=', 'users.id')
             ->join('student_enrollments', 'students.student_regi_no', '=', 'student_enrollments.student_regi_no')
@@ -96,7 +102,14 @@ class LecturerController extends Controller
             ->distinct()
             ->get();
 
-        return view('lecturer.course', compact('course', 'students'));
+        return view(
+            'lecturer.course',
+            compact(
+                'course',
+                'students',
+                'assessments'
+            )
+        );
     }
 
 }

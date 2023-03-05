@@ -53,23 +53,18 @@ Route::middleware(['auth', 'role:Admin'])->prefix('access')->group(function () {
     Route::get('add-user', [\App\Http\Controllers\UserController::class, 'create']);
     Route::post('add-user', [\App\Http\Controllers\UserController::class, 'store']);
 
-    Route::get('departments', [\App\Http\Controllers\DepartmentController::class, 'index']);
     Route::post('update-department', [\App\Http\Controllers\DepartmentController::class, 'update']);
     Route::post('add-department', [\App\Http\Controllers\DepartmentController::class, 'store']);
     
-    Route::get('programs', [\App\Http\Controllers\ProgramController::class, 'index']);
     Route::post('add-program', [\App\Http\Controllers\ProgramController::class, 'store']);
     Route::post('update-program', [\App\Http\Controllers\ProgramController::class, 'update']);
 
-    Route::get('academic-years-list', [\App\Http\Controllers\AcademicYearController::class, 'index']);
     Route::post('add-academic-year', [\App\Http\Controllers\AcademicYearController::class, 'store']);
     Route::post('update-academic-year', [\App\Http\Controllers\AcademicYearController::class, 'update']);
     
-    Route::get('semesters-list', [\App\Http\Controllers\SemesterController::class, 'index']);
     Route::post('add-semester', [\App\Http\Controllers\SemesterController::class, 'store']);
     Route::post('update-semester', [\App\Http\Controllers\SemesterController::class, 'update']);
 
-    Route::get('courses', [\App\Http\Controllers\CourseController::class, 'index']);
     Route::post('add-course', [\App\Http\Controllers\CourseController::class, 'store']);
     Route::get('course-assignment', [\App\Http\Controllers\CourseController::class, 'course_assignment']);
     Route::post('course-assignment', [\App\Http\Controllers\CourseController::class, 'course_assignment_store']);
@@ -79,15 +74,6 @@ Route::middleware(['auth', 'role:Admin'])->prefix('access')->group(function () {
 
 Route::middleware(['auth', 'role:Admin|Accounts'])->prefix('access')->group(function () {
 
-   
-    Route::get('departments', [\App\Http\Controllers\DepartmentController::class, 'index']);
-   
-    Route::get('programs', [\App\Http\Controllers\ProgramController::class, 'index']);
-   
-    Route::get('academic-years-list', [\App\Http\Controllers\AcademicYearController::class, 'index']);
-   
-    Route::get('semesters-list', [\App\Http\Controllers\SemesterController::class, 'index']);
- 
     Route::get('students-balance', [\App\Http\Controllers\AccountsController::class, 'index']);
 
     Route::get('invoices', [\App\Http\Controllers\InvoiceController::class, 'index']);
@@ -104,45 +90,19 @@ Route::middleware(['auth', 'role:Admin|Accounts'])->prefix('access')->group(func
 Route::middleware(['auth', 'role:Lecturer'])->prefix('access')->group(function () {
     Route::get('my-courses', [\App\Http\Controllers\LecturerController::class, 'my_courses']);
     Route::get('view/course/{encrypted_code}', [\App\Http\Controllers\LecturerController::class, 'view_course'])->name('access.view.course');
+
+    Route::post('add-assessment', [App\Http\Controllers\AssessmentController::class, 'store']);
 });
 
 
-Route::get('create-roles-pem', function() {
-    $viewgrades = Permission::create(['name' => 'view grades']);
-    $editgrades = Permission::create(['name' => 'edit grades']);
-    $addgrades = Permission::create(['name' => 'add grades']);
-    $adduser = Permission::create(['name' => 'add user']);
-    $edituser = Permission::create(['name' => 'edit user']);
-    $deleteuser = Permission::create(['name' => 'delete user']);
-    $addcourse = Permission::create(['name' => 'add courses']);
-    $editcourse = Permission::create(['name' => 'edit courses']);
-    $deletecourse = Permission::create(['name' => 'delete courses']);
-    $addinvoice = Permission::create(['name' => 'add invoice']);
-    $editinvoice = Permission::create(['name' => 'edit invoice']);
-    $deleteinvoice = Permission::create(['name' => 'delete invoice']);
-    $addreceipt = Permission::create(['name' => 'add receipt']);
-    $editreceipt = Permission::create(['name' => 'edit receipt']);
-    $deletereceipt= Permission::create(['name' => 'delete receipt']);
+Route::middleware(['auth', 'role_or_permission:Lecturer|Admin|Accounts'])->prefix('access')->group(function () { 
+    Route::get('courses', [\App\Http\Controllers\CourseController::class, 'index']);
 
-    $admin = Role::create(['name' => 'Admin']);
-    $admin->givePermissionTo([
-        $viewgrades, $editgrades, $addgrades, $adduser, $edituser,
-        $deleteuser, $addcourse, $editcourse, $deletecourse, $addinvoice,
-        $deleteinvoice, $editinvoice, $addreceipt, $editreceipt, $deletereceipt
-    ]);
-
-    $student = Role::create(['name' => 'Student']);
-    $principal = Role::create(['name' => 'Principal']);
-    $accounts = Role::create(['name' => 'Accounts']);
-    $teacher = Role::create(['name' => 'Teacher']);
-
-    Auth::user()->assignRole('Admin');
-
-    return 'Roles created';
-});
-
-Route::get('new', function () {
-    UndergraduateStudent::create([
-        'undergraduate_student_name' => 'All'
-    ]);
+    Route::get('departments', [\App\Http\Controllers\DepartmentController::class, 'index']);
+   
+    Route::get('programs', [\App\Http\Controllers\ProgramController::class, 'index']);
+   
+    Route::get('academic-years-list', [\App\Http\Controllers\AcademicYearController::class, 'index']);
+   
+    Route::get('semesters-list', [\App\Http\Controllers\SemesterController::class, 'index']);
 });
