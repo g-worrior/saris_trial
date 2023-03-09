@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assessment;
+use App\Models\AssessmentScore;
+use App\Models\Course;
 use App\Models\Semester;
+use App\Models\Assessment;
 use Illuminate\Http\Request;
+use App\Models\StudentEnrollment;
+use Illuminate\Support\Facades\Crypt;
 
+/**
+ * Summary of AssessmentController
+ */
 class AssessmentController extends Controller
 {
     public function index()
@@ -80,4 +87,86 @@ class AssessmentController extends Controller
 
         return redirect()->back()->with('success', 'Assessment Deleted Successfully');
     }
+
+    public function createScores($encrypted_assessment_id)
+    {
+        $assessment_id = Crypt::decrypt($encrypted_assessment_id);
+
+        $assessment = Assessment::where('assessment_id', $assessment_id)->first();
+        $course_code = Assessment::where('assessment_id', $assessment_id)
+            ->first()
+            ->course_code;
+        $course_code_s = Course::where('course_code', $course_code)
+            ->first()
+            ->course_code;
+        $course_name = Course::where('course_code', $course_code)
+            ->first()
+            ->course_name;
+
+        $registered = StudentEnrollment::join('students', 'students.student_regi_no', '=', 'student_enrollments.student_regi_no')
+            ->join('users', 'users.id', '=', 'students.user_id')
+            ->join('semesters', 'semesters.semester_id', "=", 'student_enrollments.semester_id')
+            ->leftJoin('assessment_scores', function ($join) use ($assessment_id) {
+                $join->on('assessment_scores.student_regi_no', '=', 'student_enrollments.student_regi_no')
+                    ->where('assessment_scores.assessment_id', $assessment_id);
+            })
+            ->where([
+                ['student_enrollments.course_code', $course_code],
+                ['semesters.s_is_current', 1]
+            ])
+            ->select([
+                'users.name',
+                'student_enrollments.student_regi_no',
+                'student_enrollments.course_code',
+                'assessment_scores.score'
+            ])
+            ->get();
+
+
+        // return $assessment;
+        return view(
+            'lecturer.add-scores',
+            compact(
+                'registered',
+                'course_code_s',
+                'course_name',
+                'assessment',
+            )
+        );
+    }
+
+    // store assessment scores in database
+    /**
+     * Summary of postScores
+     * @param Request $request
+     * @return Request
+     */
+    public function storeAssessmentScores(Request $request)
+{
+    $assessmentId = $request->input('assessment_id');
+    $regiNumbers = $request->input('student_regi_no');
+    $grades = $request->input('grades');
+
+    foreach ($regiNumbers as $index => $regiNumber) {
+        // check if a score exists for this assessment and student
+        $score = AssessmentScore::where('assessment_id', $assessmentId)
+            ->where('student_regi_no', $regiNumber)
+            ->first();
+
+        if (!$score) {
+            // if no score exists, create a new one
+            $score = new AssessmentScore();
+            $score->assessment_id = $assessmentId;
+            $score->student_regi_no = $regiNumber;
+        }
+
+        // update the score
+        $score->score = $grades[$index];
+        $score->save();
+    }
+
+    return redirect()->back()->with('success', 'Scores Added/Updated successfully!');
+}
+
+
 }

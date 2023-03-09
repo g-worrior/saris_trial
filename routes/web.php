@@ -94,6 +94,8 @@ Route::middleware(['auth', 'role:Lecturer'])->prefix('access')->group(function (
     Route::post('add-assessment', [App\Http\Controllers\AssessmentController::class, 'store']);
     Route::post('edit-assessment', [App\Http\Controllers\AssessmentController::class, 'update']);
     Route::post('delete-assessment', [App\Http\Controllers\AssessmentController::class, 'destroy']);
+    Route::get('add-scores/{encrypted_assessment_id}', [App\Http\Controllers\AssessmentController::class, 'createScores'])->name('add-scores');
+    Route::post('add-assessment-scores', [App\Http\Controllers\AssessmentController::class, 'storeAssessmentScores']);
 });
 
 

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('styles')
+    <style>
+        #enrolled {
+            width: 100% !important;
+        }
+    </style>
+
 @endsection
 
 @section('content')
@@ -17,7 +23,7 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                                <li class="breadcrumb-item">My Teaching Courses</li>
+                                <li class="breadcrumb-item"><a href="/access/my-courses"> My Teaching Courses</a></li>
                                 <li class="breadcrumb-item active">{{ $course->course_code }}</li>
                             </ol>
                         </div>
@@ -79,7 +85,8 @@
                                         <td>{{ $assessment->maximum_score }}</td>
                                         <td>{{ $assessment->weight }}</td>
                                         <td>
-                                            <a href="" class="fa fa-eye"> <small>Grades</small></a><br>
+                                            <a href={{ route('add-scores', ['encrypted_assessment_id' => Crypt::encrypt($assessment->assessment_id)]) }}
+                                                class="fa fa-eye"> <small>Grades</small></a><br>
                                             <a href="" class="fa fa-edit" data-toggle="modal"
                                                 data-target="#edit-{{ $assessment->assessment_id }}"><small>Edit</small></a><br>
                                             <a href="" class="fa fa-trash"data-toggle="modal"
@@ -200,34 +207,31 @@
                         <!-- add assessment modal  -->
                     </div>
                     <div id="participants" class="tab-pane">
-                        <table id="enrolled" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Student RegNo</th>
-                                    <th>Fullname</th>
-                                    <th>Gender</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($students as $key => $student)
-                                    <tr>
-                                        <td scope="row">{{ ++$key }}</td>
-                                        <td>{{ $student->student_regi_no }}</td>
-                                        <td>{{ $student->name }}</td>
-                                        <td>{{ $student->gender }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Student RegNo</th>
-                                    <th>Fullname</th>
-                                    <th>Gender</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="enrolled" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Student RegNo</th>
+                                            <th>Fullname</th>
+                                            <th>Gender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($students as $key => $student)
+                                            <tr>
+                                                <td scope="row">{{ ++$key }}</td>
+                                                <td>{{ $student->student_regi_no }}</td>
+                                                <td>{{ $student->name }}</td>
+                                                <td>{{ $student->gender }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div id="gradeReport" class="tab-pane">
                         <table class="table table-bordered">
@@ -255,9 +259,6 @@
 @endsection
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     <!-- DataTables  & Plugins -->
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -267,20 +268,27 @@
     <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script src="/plugins/jszip/jszip.min.js"></script>
     <script src="/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
     <script>
         $(document).ready(function() {
             $("#enrolled").DataTable({
                 "responsive": true,
+                "paging": false,
+                "searching": false,                
                 "buttons": ["copy", "csv", "excel", "pdf", "print", ]
-
             }).buttons().container().appendTo('#enrolled_wrapper .col-md-6:eq(0)');
-
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#assessment").DataTable({
+                "responsive": true,
+                "paging": false,
+                "searching": false,
+            });
         });
     </script>
 @endsection
