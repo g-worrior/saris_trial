@@ -71,20 +71,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($assessments as $key => $assessment)
-                               <tr>
-                                <td>{{ ++$key }}</td>
-                                <td>{{ $assessment->description }}</td>
-                                <td>{{ $assessment->type }}</td>
-                                <td>{{ $assessment->maximum_score }}</td>
-                                <td>{{ $assessment->weight }}</td>
-                                <td>
-                                    <a href="" class="fa fa-eye"> <small>Grades</small></a><br>
-                                    <a href="" class="fa fa-edit"><small>Edit</small></a><br>
-                                    <a href="" class="fa fa-trash"><small>Delete</small></a>
-                                </td>
-                            </tr>                                   
-                               @endforeach
+                                @foreach ($assessments as $key => $assessment)
+                                    <tr>
+                                        <td>{{ ++$key }}</td>
+                                        <td>{{ $assessment->description }}</td>
+                                        <td>{{ $assessment->type }}</td>
+                                        <td>{{ $assessment->maximum_score }}</td>
+                                        <td>{{ $assessment->weight }}</td>
+                                        <td>
+                                            <a href="" class="fa fa-eye"> <small>Grades</small></a><br>
+                                            <a href="" class="fa fa-edit" data-toggle="modal"
+                                                data-target="#edit-{{ $assessment->assessment_id }}"><small>Edit</small></a><br>
+                                            <a href="" class="fa fa-trash"><small>Delete</small></a>
+                                        </td>
+                                    </tr>
+                                    <!--edit assessment modal -->
+                                    <div class="modal fade" id="edit-{{ $assessment->assessment_id }}" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Assessmrnt For {{ $course->course_code }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                @livewire('edit-assessment', ['assessmentId' => $assessment->assessment_id])
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- edit assessment modal  -->
+                                @endforeach
                             </tbody>
                         </table>
                         <!--add assessment modal -->
@@ -103,8 +122,8 @@
                                         <div class="modal-body">
                                             <div class="col form-group">
                                                 <label for="">Description</label>
-                                                <input class="form-control" type="text" name="description" id=""
-                                                    placeholder="Assessment descriptiom">
+                                                <input class="form-control" type="text" name="description"
+                                                    id="" placeholder="Assessment descriptiom">
                                             </div>
                                             <div class="col form-group">
                                                 <label for="">Type</label>
@@ -113,12 +132,12 @@
                                                     <option value="Assignment">Assignment</option>
                                                     <option value="MS">Mid Semester</option>
                                                     <option value="EOS">End of Semester</option>
-                                                </select>                                            
+                                                </select>
                                             </div>
                                             <div class="col form-group">
                                                 <label for="">Maximum Score</label>
-                                                <input class="form-control" type="text" name="maximum_score" id=""
-                                                    placeholder="Assessment max score">
+                                                <input class="form-control" type="text" name="maximum_score"
+                                                    id="" placeholder="Assessment max score">
                                             </div>
                                             <div class="col form-group">
                                                 <label for="">Weight</label>
@@ -141,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- add department modal  -->
+                        <!-- add assessment modal  -->
                     </div>
                     <div id="participants" class="tab-pane">
                         <table id="enrolled" class="table table-bordered table-striped">
@@ -211,29 +230,20 @@
     <script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     <script src="/plugins/jszip/jszip.min.js"></script>
     <script src="/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function() {
             $("#enrolled").DataTable({
-                "paging": false,
                 "responsive": true,
-                "lengthChange": false,
-                "searching": true,
-                "autoWidth": false,
-                "buttons": ["excel", "pdf", "print", ]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", ]
+
             }).buttons().container().appendTo('#enrolled_wrapper .col-md-6:eq(0)');
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $("#assessment").DataTable({
-                "responsive": true,
-                "searching": false,
-                "ordering": true,
-            });
+
         });
     </script>
 @endsection

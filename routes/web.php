@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:Lecturer'])->prefix('access')->group(function (
     Route::get('view/course/{encrypted_code}', [\App\Http\Controllers\LecturerController::class, 'view_course'])->name('access.view.course');
 
     Route::post('add-assessment', [App\Http\Controllers\AssessmentController::class, 'store']);
+    Route::post('edit-assessment', [App\Http\Controllers\AssessmentController::class, 'update']);
 });
 
 
