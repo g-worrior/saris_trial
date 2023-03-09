@@ -82,16 +82,18 @@
                                             <a href="" class="fa fa-eye"> <small>Grades</small></a><br>
                                             <a href="" class="fa fa-edit" data-toggle="modal"
                                                 data-target="#edit-{{ $assessment->assessment_id }}"><small>Edit</small></a><br>
-                                            <a href="" class="fa fa-trash"><small>Delete</small></a>
+                                            <a href="" class="fa fa-trash"data-toggle="modal"
+                                                data-target="#delete-{{ $assessment->assessment_id }}"><small>Delete</small></a>
                                         </td>
                                     </tr>
                                     <!--edit assessment modal -->
-                                    <div class="modal fade" id="edit-{{ $assessment->assessment_id }}" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal fade" id="edit-{{ $assessment->assessment_id }}" tabindex="-1"
+                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Assessmrnt For {{ $course->course_code }}</h5>
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Assessment For
+                                                        {{ $course->course_code }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
@@ -103,6 +105,41 @@
                                         </div>
                                     </div>
                                     <!-- edit assessment modal  -->
+
+                                    <!--delete assessment modal -->
+                                    <div class="modal fade" id="delete-{{ $assessment->assessment_id }}" tabindex="-1"
+                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Assessment For
+                                                        {{ $course->course_code }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                {{-- form to pass the assessment id to be deleted --}}
+                                                <form action="/access/delete-assessment" method="POST">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <h5>Are you sure you want to delete this assessment?</h5>
+                                                        <br>
+                                                        <p class="text-danger">This will delete the assessment along with is
+                                                            data including grades</p>
+                                                        <input type="text" name="assessment_id" hidden
+                                                            value="{{ $assessment->assessment_id }}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- delete assessment modal  -->
                                 @endforeach
                             </tbody>
                         </table>

@@ -37,7 +37,7 @@
             <div class="col form-group">
                 <label for="">Course Code</label>
                 <input type="text" class="form-control"
-                    name="course_code" value="{{ $assessment->course_code }}">
+                    name="course_code" readonly value="{{ $assessment->course_code }}">
             </div>
         </div>
         <div class="modal-footer">

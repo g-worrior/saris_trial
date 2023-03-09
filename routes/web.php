@@ -93,6 +93,7 @@ Route::middleware(['auth', 'role:Lecturer'])->prefix('access')->group(function (
 
     Route::post('add-assessment', [App\Http\Controllers\AssessmentController::class, 'store']);
     Route::post('edit-assessment', [App\Http\Controllers\AssessmentController::class, 'update']);
+    Route::post('delete-assessment', [App\Http\Controllers\AssessmentController::class, 'destroy']);
 });
 
 
