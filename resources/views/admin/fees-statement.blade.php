@@ -5,7 +5,6 @@
 
 @section('title', 'Fees Statement -')
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
         <div class="card">
@@ -18,7 +17,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/access/students">Students</a> </li>
+                            <li class="breadcrumb-item"><a href="/access/students-balance">Balances</a> </li>
                             <li class="breadcrumb-item active">{{ $student_regi_no }}</li>&nbsp;
                         </ol>
                     </div>
@@ -32,12 +31,6 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-        <div>
-            @livewire('get-student', ['studentId' => $student_regi_no])
-        </div>
-    </div>
-</section>
-    <div class="content">
         <div class="card">
             <div class="card-head">
             </div>
@@ -52,8 +45,11 @@
             </div>
         </div>
     </div>
+</section>
+   
     
 @endsection
+
 
 @section('scripts')
 <script>

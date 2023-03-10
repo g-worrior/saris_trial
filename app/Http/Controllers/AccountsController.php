@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\Receipt;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class AccountsController extends Controller
 {
@@ -37,6 +39,16 @@ class AccountsController extends Controller
         $invoices = Invoice::orderBy('invoice_identification')->get();
 
 
-        return view('admin.accounts', compact('balances', 'invoices'));
+        return view('admin.fees-balance', compact('balances', 'invoices'));
+    }
+
+    public function getFeesStatement($student_regi_no_encrypted)
+    {
+        $student_regi_no = Crypt::decrypt($student_regi_no_encrypted);
+        $student_regi_no = Student::where('student_regi_no', $student_regi_no)->first()->student_regi_no;
+        $student_name = Student::join('users', 'users.id', '=', 'students.user_id')
+        ->where('student_regi_no', $student_regi_no)->first()->name; 
+
+        return view('admin.fees-statement', compact('student_regi_no', 'student_name'));
     }
 }

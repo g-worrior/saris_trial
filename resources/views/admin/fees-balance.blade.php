@@ -71,12 +71,11 @@
                                             <td>{{ $student->year_of_study }}</td>
                                             <td>{{ $student->balance }}</td>
                                             <td>
-                                                <a href="" class="fa fa-eye" data-toggle="modal"
-                                                    data-target="#view-statement-{{ $student->student_regi_no }}"></a>
+                                                <a href="{{ route('get-student-fees-statement', ['student_regi_no_encrypted' => Crypt::encrypt($student->student_regi_no)]) }}" class="fa fa-eye"></a>
                                             </td>
                                         </tr>
                                         {{-- start view student fees statement --}}
-                                        <div class="modal fade" id="view-statement-{{ $student->student_regi_no }}"
+                                        {{-- <div class="modal fade" id="view-statement-{{ $student->student_regi_no }}"
                                             tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-fullscreen" role="document">
@@ -89,13 +88,23 @@
                                                         </button>
 
                                                     </div>
-                                                    <div class="modal-body">                                                        
-                                                        @livewire('student-fees-statement', ['student_regi_no' => $student->student_regi_no])
+                                                    <div class="modal-body">
+                                                        <div id="printable-content">
+                                                            @livewire('student-fees-statement', ['student_regi_no' => $student->student_regi_no])
+                                                        </div>
                                                     </div>
+
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-primary" onclick="printContent()">Print Statement</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+
+
 
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         {{-- end modal view student fees statement --}}
                                     @endforeach
                                 </tbody>
@@ -175,27 +184,6 @@
 @endsection
 
 @section('scripts')
-    <!-- Toastr -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    @if ($message = Session::get('success'))
-        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            toastr.success('{{ $message }}')
-        </script>
-    @endif
-
     <!-- DataTables  & Plugins -->
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -223,4 +211,16 @@
 
         });
     </script>
+
+<script>
+    function printContent() {
+        var printContents = document.getElementById("printable-content").innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>
+
+
 @endsection

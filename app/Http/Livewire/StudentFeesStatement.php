@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Invoice;
 use App\Models\Receipt;
+use App\Models\Student;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 
@@ -12,8 +13,14 @@ class StudentFeesStatement extends Component
     public $student_regi_no;
     public $fees_statement;
     public $balance;
+    public $student;
     public function mount($student_regi_no)
     {
+        $student = Student::join('users', 'users.id', '=', 'students.user_id')
+            ->where('students.student_regi_no', $student_regi_no)
+            ->select('users.name', 'students.student_regi_no')
+            ->first();
+
         $balance = DB::table('students')
             ->Join('users', 'students.user_id', '=', 'users.id')
             ->leftJoin('student_invoices', 'students.student_regi_no', '=', 'student_invoices.student_regi_no')
@@ -68,6 +75,7 @@ class StudentFeesStatement extends Component
 
         $this->fees_statement = $fees_statement;
         $this->balance = $balance;
+        $this->student = $student;
     }
     public function render()
     {

@@ -72,6 +72,8 @@ Route::middleware(['auth', 'role:Admin|Accounts'])->prefix('access')->group(func
 
     Route::get('students-balance', [\App\Http\Controllers\AccountsController::class, 'index']);
 
+    Route::get('get-student-fees-statement/{student_regi_no_encrypted}', [\App\Http\Controllers\AccountsController::class, 'getFeesStatement'])->name('get-student-fees-statement');
+
     Route::get('invoices', [\App\Http\Controllers\InvoiceController::class, 'index']);
     Route::get('invoice-student', [\App\Http\Controllers\InvoiceController::class, 'getInvoiceStudent']);
     Route::post('add-invoice', [\App\Http\Controllers\InvoiceController::class, 'store']);
