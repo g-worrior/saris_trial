@@ -75,7 +75,8 @@ class StudentController extends Controller
 
     public function get_academic_profile()
     {
-        $student = Student::select('students.*', 'departments.*', 'programs.*', 'guardians.*', 'emergency_contacts.*')
+        $student = Student::select('users.name', 'users.email', 'students.*', 'departments.*', 'programs.*', 'guardians.*', 'emergency_contacts.*')
+            ->join('users', 'users.id', '=', 'students.user_id')
             ->join('programs', 'students.program_id', '=', 'programs.program_id')
             ->join('departments', 'programs.department_id', '=', 'departments.department_id')
             ->leftJoin('guardians', 'students.guardian_id', '=', 'guardians.guardian_id')

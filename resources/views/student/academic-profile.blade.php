@@ -6,185 +6,234 @@
 @section('title', 'Academic Profile -')
 @section('content')
     <div class="content">
-        <br>
-        <div class="card">
-            <div class="card-head">
-                <h4>Academic Profile</h4>
-            </div>
-            <div class="card-body">
-                <div class="col">
-                    <div class="d-flex justify-content-center">
-                        <div class="row" style="float: none; margin: 0 auto;">
-                            <img style="width: 80px;" class="rounded-circle "
-                                src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="">
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col">
-                        <label for="">{{ Auth::user()->name }}</label>
-                        <input class="form-control" type="text" value="Ohalha Likoswe" readonly>
-                    </div>
-                    <div class="col">
-                        <label for="">Gender</label>
-                        <input class="form-control" type="text" value="{{ $student->gender }}" readonly>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <label for="">Date of birth</label>
-                        <input class="form-control" type="text" value="{{ $student->dob }}" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="">Admission year</label>
-                        <input class="form-control" type="text" value="{{ $student->enrollment_year }}" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <label for="">Year of study</label>
-                        <input type="text" class="form-control" value="{{ $student->year_of_study }}" readonly>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-head">
-                        <h4>Program of study</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="col">
-                            <label for="">Department name</label>
-                            <input class="form-control" type="text" value="{{ $student->department_name }}" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Program code</label>
-                            <input class="form-control" type="text" value="{{ $student->program_code }}" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Program name</label>
-                            <input class="form-control" type="text" value="{{ $student->program_name }}" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Registration number</label>
-                            <input value="{{ $student->student_regi_no }}" type="text" class="form-control" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-head">
-                        <h4>Contact details</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="col">
-                            <label for="">Phone number</label>
-                            <input type="text" class="form-control" value="{{ $student->s_phone1 }}" readonly>
-                        </div>
-                        @if ($student->s_phone2 != NULL)
-                            <div class="col">
-                                <label for="">Secondary number</label>
-                                <input type="text" class="form-control" value="{{ $student->s_phone2 }}" readonly>
+       <div class="card">
+            
+        <div class="card-body">
+            <h3  class="card-title text-bold">Academic Profile</h3>
+            <div class="container mt-5">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#student-details">Student Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#contact-details">Contact Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#address">Address</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#academic-details">Academic Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#guardian">Guardian</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#emergency-contact">Emergency Contact</a>
+                    </li>
+                </ul>
+            
+                <div class="tab-content mt-3">
+                    <div id="student-details" class="tab-pane fade show active">
+                        <h3>Student Details</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Name:</p>
                             </div>
-                        @endif
-
-                        <div class="col">
-                            <label for="">Email</label>
-                            <input type="text" class="form-control" value="{{ Auth::user()->email }}" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-head">
-                        <h4>Guardian details</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="col">
-                            <label for="">Title</label>
-                            <input value="{{ $student->g_title }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Full name</label>
-                            <input value="{{ $student->g_name }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Relationship</label>
-                            <input value="{{ $student->g_relationship }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Phone number 1</label>
-                            <input value="{{ $student->g_phone1 }}" type="text" class="form-control" readonly>
-                        </div>
-                        @if ($student->g_phone2 != NULL)
-                            <div class="col">
-                                <label for="">Phone number 2</label>
-                                <input value="{{ $student->g_phone2 }}" type="text" class="form-control" readonly>
+                            <div class="col-md-8">
+                                <p>{{ $student->name }}</p>
                             </div>
-                        @endif
-                        <div class="col">
-                            <label for="">District</label>
-                            <input value="{{ $student->g_district }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Address</label>
-                            <input value="{{ $student->g_address }}" type="text" class="form-control" readonly>
+                            <div class="col-md-4">
+                                <p>Date of Birth:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->dob }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Gender:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->gender }}</p>
+                            </div>
                         </div>
                     </div>
+            
+                    <div id="contact-details" class="tab-pane fade">
+                        <h3>Contact Details</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Phone Number 1:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->s_phone1 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Phone Number 2:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->s_phone2 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Email:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->email }}</p>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div id="address" class="tab-pane fade">
+                        <h3>Address</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Home of Origin:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->s_district_of_origin }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Village:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->s_home_village }}e</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Current District:</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>{{ $student->s_current_district }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="academic-details" class="tab-pane fade">
+                        <h3>Academic Details</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Department of Study:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->department_name }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Program of Study:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->program_name }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Enrollment Year:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->enrollment_year }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Year of Study:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->year_of_study }}</p>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div id="guardian" class="tab-pane fade">
+                        <h3>Guardian</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Title:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_title }}.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_name }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Relationship:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_relationship }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Phone Number 1:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_phone1 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Phone Number 2:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_phone2 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>District:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_district }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Address:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->g_address }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="emergency-contact" class="tab-pane fade">
+                        <h3>Emergency Contact</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Title:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_title }}.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_name }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Relationship:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_relationship }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Phone Number 1:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_phone1 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Phone Number 2:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_phone2 }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>District:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_district }}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Address:</p>
+                            </div>
+                            <div class="col-md-8">
+                                <p>{{ $student->e_address }}</p>
+                            </div>
+                        </div>
+                    </div>
+            
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-head">
-                        <h4>Emergency Contact details</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="col">
-                            <label for="">Title</label>
-                            <input value="{{ $student->e_title }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Full name</label>
-                            <input value="{{ $student->e_name }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Relationship</label>
-                            <input value="{{ $student->e_relationship }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Phone number 1</label>
-                            <input value="{{ $student->e_phone1 }}" type="text" class="form-control" readonly>
-                        </div>
-                        @if ($student->e_phone2 != NULL)
-                        <div class="col">
-                            <label for="">Phone number 2</label>
-                            <input value="{{ $student->e_phone2 }}" type="text" class="form-control" readonly>
-                        </div>
-                        @endif                       
-                        <div class="col">
-                            <label for="">District</label>
-                            <input value="{{ $student->e_district }}" type="text" class="form-control" readonly>
-                        </div>
-                        <div class="col">
-                            <label for="">Address</label>
-                            <input value="{{ $student->e_address }}" type="text" class="form-control" readonly>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
+       </div>
     </div>
 @endsection
 

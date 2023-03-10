@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'User Profile -')
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -27,7 +28,7 @@
                             <div class="card-body">
 
                                 <div class="input-group mb-3">
-                                    <input type="text" name="name"
+                                    <input type="text" name="name" readonly
                                            class="form-control @error('name') is-invalid @enderror"
                                            placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}" required>
                                     <div class="input-group-append">
@@ -43,7 +44,7 @@
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <input type="email" name="email"
+                                    <input type="email" name="email" readonly
                                            class="form-control @error('email') is-invalid @enderror"
                                            placeholder="{{ __('Email') }}" value="{{ old('email', auth()->user()->email) }}" required>
                                     <div class="input-group-append">
@@ -58,6 +59,7 @@
                                     @enderror
                                 </div>
 
+                                <h4>{{ __('Change pasword') }}</h4>
                                 <div class="input-group mb-3">
                                     <input type="password" name="password"
                                            class="form-control @error('password') is-invalid @enderror"
@@ -89,7 +91,7 @@
                             </div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+                                <button type="submit" class="btn btn-primary">{{ __('Change Password') }}</button>
                             </div>
                         </form>
                     </div>
