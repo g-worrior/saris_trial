@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Invoice;
-use App\Models\Receipt;
 use App\Models\Student;
 use App\Models\Semester;
-use App\Models\Department;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use App\Models\StudentEnrollment;
@@ -34,7 +31,7 @@ class StudentController extends Controller
         $student_regi_no = Crypt::decrypt($student_regi_no_encrypted);
         $student_regi_no = Student::where('student_regi_no', $student_regi_no)->first()->student_regi_no;
         $student_name = Student::join('users', 'users.id', '=', 'students.user_id')
-        ->where('student_regi_no', $student_regi_no)->first()->name;
+            ->where('student_regi_no', $student_regi_no)->first()->name;
 
         return view('admin.view-student', compact('student_regi_no', 'student_name'));
     }

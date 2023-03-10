@@ -9,6 +9,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 @endsection
 
+@section('title', 'Dashboard - ')
 @section('content')
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -37,7 +38,7 @@
                                 {{ __('You are logged in!') }}
                             </p>
                             <!-- Small boxes (Stat box) -->
-                            @role('Admin|Accounts')
+                            @role('Admin|Accounts|Lecturer')
                                 <div class="row">
                                     <div class="col-lg-3 col-6">
                                         <!-- small box -->

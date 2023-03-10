@@ -3,6 +3,7 @@
 @section('styles')
 @endsection
 
+@section('title', 'Fees Statement -')
 @section('content')
     <div class="content">
         <div class="card">

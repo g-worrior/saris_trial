@@ -1,10 +1,6 @@
 <?php
 
-use App\Http\Livewire\GetStudent;
-use Spatie\Permission\Models\Role;
-use App\Models\UndergraduateStudent;
 use Illuminate\Support\Facades\Route;
-use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +12,6 @@ use Spatie\Permission\Models\Permission;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 
 Auth::routes();
 

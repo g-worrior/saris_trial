@@ -4,6 +4,7 @@
     @livewireStyles
 @endsection
 
+@section('title', 'Add Student -')
 @section('content')
     <section class="content">
         <form action="/access/add-student" method="Post" enctype="multipart/form-data">

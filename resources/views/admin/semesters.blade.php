@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
 
+@section('title', 'Semesters -')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -189,25 +190,6 @@
 @endsection
 
 @section('scripts')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    @if ($message = Session::get('success'))
-        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            toastr.success('{{ $message }}')
-        </script>
-    @endif
     <!-- DataTables  & Plugins -->
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -232,7 +214,6 @@
 
                 "buttons": ["copy", "csv", "excel", "pdf", "print", ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
         });
     </script>
 @endsection

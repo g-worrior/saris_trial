@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
 
+@section('title', 'Register Courses -')
 @section('content')
     <!-- Preloader -->
     <div class="content-header">

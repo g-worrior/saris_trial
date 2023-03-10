@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
+@section('title', 'Students -')
 
 @section('content')
     <!-- Content Header (Page header) -->

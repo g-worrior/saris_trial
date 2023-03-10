@@ -4,6 +4,7 @@
     @livewireStyles
 @endsection
 
+@section('title', 'Add User -')
 @section('content')
     <section class="content">
         {{-- add lecturer starts here --}}

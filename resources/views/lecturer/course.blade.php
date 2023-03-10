@@ -9,6 +9,7 @@
 
 @endsection
 
+@section('title', 'My Teaching Courses - ' . $course->course_code .' -')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">

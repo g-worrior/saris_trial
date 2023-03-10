@@ -3,6 +3,7 @@
 @section('styles')
 @endsection
 
+@section('title', 'Assessment scores -')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">

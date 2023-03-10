@@ -3,6 +3,7 @@
 @section('styles')
 @endsection
 
+@section('title', 'Academic Profile -')
 @section('content')
     <div class="content">
         <br>

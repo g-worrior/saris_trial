@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endsection
 
+@section('title', 'Academic Years -')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">

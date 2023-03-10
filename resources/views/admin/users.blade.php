@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('title', 'Users -')
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">

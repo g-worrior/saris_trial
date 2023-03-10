@@ -3,6 +3,7 @@
 @section('styles')
 @endsection
 
+@section('title', 'Grades -')
 @section('content')
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">

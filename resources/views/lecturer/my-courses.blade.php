@@ -3,6 +3,7 @@
 @section('styles')
 @endsection
 
+@section('title', 'My Teaching Courses -')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
