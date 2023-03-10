@@ -13,7 +13,13 @@ class GetStudent extends Component
     public function mount($studentId)
     {
         $this->studentId = $studentId;
-        $this->student = Student::where('student_id', $this->studentId)->first();
+        $this->student = Student::where('student_regi_no', $this->studentId)
+            ->join('users', 'users.id', '=', 'students.user_id')
+            ->join('programs', 'programs.program_id', '=', 'students.program_id')
+            ->join('departments', 'departments.department_id', '=', 'programs.department_id')
+            ->join('guardians', 'guardians.guardian_id', '=', 'students.guardian_id')
+            ->join('emergency_contacts', 'emergency_contacts.emergency_contact_id', '=', 'students.emergency_contact_id')
+            ->first();
     }
     public function render()
     {

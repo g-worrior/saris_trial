@@ -23,9 +23,13 @@
                                 <li class="breadcrumb-item"><a href="/home">Home</a></li>
                                 <li class="breadcrumb-item active">Students</li>
                                 <li class="breadcrumb-item">
-                                    <a style="position:relative; bottom:4px; left:2px;" class="btn btn-primary"
-                                        href="/access/add-student"> <i class='fa fa-plus-circle'></i> Create
-                                        New</a>
+                                    <a class="btn btn-primary" href="/access/add-student"> <i
+                                            class='fa fa-plus-circle'></i>Add New Student</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a class="btn btn-primary" href="/access/add-student"> <i
+                                            class='fa fa-file-import'></i>Import from CSV</a>
+
                                 </li>&nbsp;
                             </ol>
                         </div>
@@ -45,23 +49,12 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <div>
-                                <form name="StudentClass" id="StudentClass" method="post" action="">
-                                    <div class="row">
-                                        
-                                        <div class="ml-auto" style="position:relative; bottom:5px;">
-                                            <a class="btn btn-secondary" href="" data-toggle="modal" data-target="#importStudents"> <i class="fa fa-file-import"></i>
-                                                Import</a>
-                                        </div>
-                                    </div>
 
-                                </form>
-                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            
-                              
+
+
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -82,18 +75,16 @@
                                             <td>{{ $student->enrollment_year }}</td>
                                             <td>{{ $student->gender }}</td>
                                             <td>
-                                                <div>
-                                                    <a href="" class="fa fa-eye" data-toggle="modal"
-                                                        data-target="#viewstudent-{{ $student->student_id }}"
-                                                        wire:click="$set('studentId', $student->student_id)"></a>
 
+                                                <div>
+                                                    <a href="{{ route('get-student', ['student_regi_no_encrypted' => Crypt::encrypt($student->student_regi_no)]) }}" class="fa fa-eye"></a>
                                                     <a href="" class="fa fa-edit" data-toggle="modal"
                                                         data-target="#editstudent"></a>
                                                 </div>
                                             </td>
                                         </tr>
                                         <!-- View student Modal -->
-                                        <div class="modal fade" id="viewstudent-{{ $student->student_id }}" tabindex="-1"
+                                        {{-- <div class="modal fade" id="viewstudent-{{ $student->student_regi_no }}" tabindex="-1"
                                             role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
@@ -105,7 +96,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        @livewire('get-student', ['studentId' => $student->student_id])
+                                                        @livewire('get-student', ['studentId' => $student->student_regi_no])
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
@@ -113,7 +104,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <!-- End of view student modal -->
 
                                         <!-- edit student Modal -->
@@ -163,36 +154,36 @@
             </div>
             <!-- /.row -->
 
-             <!--Import students modal -->
-        <div class="modal fade" id="importStudents" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Import Students</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="/access/" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="col form-group">
-                            <label for="">Import CSV File</label>
-                            <input class="form-control" type="file" name="cvs" id="">
+            <!--Import students modal -->
+            <div class="modal fade" id="importStudents" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Import Students</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Import</button>
-                    </div>
-                </form>
+                        <form action="/access/" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="col form-group">
+                                    <label for="">Import CSV File</label>
+                                    <input class="form-control" type="file" name="cvs" id="">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Import</button>
+                            </div>
+                        </form>
 
+                    </div>
+                </div>
             </div>
+            <!--Import students modal -->
         </div>
-    </div>
-             <!--Import students modal -->
-            </div>
         <!-- /.container-fluid -->
 
     </section>
@@ -220,8 +211,9 @@
                 "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        
-           
+
+
         });
-        </script>
+    </script>
+   
 @endsection

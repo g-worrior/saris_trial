@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\UndergraduateStudent;
+use App\Http\Livewire\GetStudent;
 use Spatie\Permission\Models\Role;
+use App\Models\UndergraduateStudent;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Permission;
 
@@ -41,10 +42,11 @@ Route::middleware(['auth', 'role_or_permission:Student'])->prefix('student')->gr
 
 Route::middleware(['auth', 'role:Admin'])->prefix('access')->group(function () {
 
-    Route::get('students', [\App\Http\Controllers\StudentController::class, 'show'])->middleware('permission:view grades');
+    Route::get('students', [\App\Http\Controllers\StudentController::class, 'index'])->middleware('permission:view grades');
     Route::get('add-student', [\App\Http\Controllers\StudentController::class, 'create']);
     Route::post('add-student', [\App\Http\Controllers\StudentController::class, 'store']);
-    
+    Route::get('get-student/{student_regi_no_encrypted}', [\App\Http\Controllers\StudentController::class, 'show'])->name('get-student');
+
     Route::get('lecturers', [\App\Http\Controllers\LecturerController::class, 'index']);
     Route::get('add-lecturer', [\App\Http\Controllers\LecturerController::class, 'create']);
     Route::post('add-lecturer', [\App\Http\Controllers\LecturerController::class, 'store']);

@@ -13,18 +13,32 @@ use Illuminate\Http\Request;
 use App\Models\StudentEnrollment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 // use SebastianBergmann\ResourceOperations\generate;
 
 class StudentController extends Controller
 {
     //show all students
-    public function show()
+    public function index()
     {
         $students = Student::join('users', 'students.user_id', '=', 'users.id')
             ->get();
         return view('admin.students', compact('students'));
     }
+
+
+    // show aparticula student
+    public function show($student_regi_no_encrypted)
+    {
+        $student_regi_no = Crypt::decrypt($student_regi_no_encrypted);
+        $student_regi_no = Student::where('student_regi_no', $student_regi_no)->first()->student_regi_no;
+        $student_name = Student::join('users', 'users.id', '=', 'students.user_id')
+        ->where('student_regi_no', $student_regi_no)->first()->name;
+
+        return view('admin.view-student', compact('student_regi_no', 'student_name'));
+    }
+
 
     //get add student page
     public function create()
