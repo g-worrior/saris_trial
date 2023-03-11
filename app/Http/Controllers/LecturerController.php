@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assessment;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lecturer;
+use App\Models\Semester;
+use App\Models\Assessment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -100,14 +101,32 @@ class LecturerController extends Controller
             ->where('semesters.s_is_current', 1)
             ->select('students.student_regi_no', 'students.gender', 'users.name')
             ->distinct()
+            ->orderBy('students.student_regi_no', 'ASC')
             ->get();
 
+        $currentSemesterId = Semester::where('s_is_current', 1)->first()->semester_id; // assuming there's only one current semester
+
+        $finalScores = DB::table('assessments')
+            ->join('assessment_scores', 'assessments.assessment_id', '=', 'assessment_scores.assessment_id')
+            ->select(
+                'assessment_scores.student_regi_no',
+                DB::raw('SUM(assessments.weight * assessment_scores.score / assessments.maximum_score) as final_score'),
+                DB::raw('GROUP_CONCAT(assessments.description) as descriptions'),
+                DB::raw('GROUP_CONCAT(assessment_scores.score) as scores')
+            )
+            ->where('assessments.semester_id', $currentSemesterId)
+            ->where('assessments.course_code', $course_code)
+            ->groupBy('assessment_scores.student_regi_no')
+            ->get();
+
+        // return $finalScores;
         return view(
             'lecturer.course',
             compact(
                 'course',
                 'students',
-                'assessments'
+                'assessments',
+                'finalScores'
             )
         );
     }

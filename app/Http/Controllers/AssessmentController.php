@@ -105,22 +105,29 @@ class AssessmentController extends Controller
 
         $registered = StudentEnrollment::join('students', 'students.student_regi_no', '=', 'student_enrollments.student_regi_no')
             ->join('users', 'users.id', '=', 'students.user_id')
-            ->join('semesters', 'semesters.semester_id', "=", 'student_enrollments.semester_id')
+            ->join('semesters', 'semesters.semester_id', '=', 'student_enrollments.semester_id')
             ->leftJoin('assessment_scores', function ($join) use ($assessment_id) {
                 $join->on('assessment_scores.student_regi_no', '=', 'student_enrollments.student_regi_no')
                     ->where('assessment_scores.assessment_id', $assessment_id);
+            })
+            ->join('assessments', function ($join) use ($assessment_id) {
+                $join->on('assessments.semester_id', '=', 'semesters.semester_id')
+                    ->where('assessments.assessment_id', '=', $assessment_id);
             })
             ->where([
                 ['student_enrollments.course_code', $course_code],
                 ['semesters.s_is_current', 1]
             ])
             ->select([
+                'assessments.maximum_score',
                 'users.name',
                 'student_enrollments.student_regi_no',
                 'student_enrollments.course_code',
                 'assessment_scores.score'
             ])
             ->get();
+
+
 
 
         // return $assessment;
@@ -142,31 +149,31 @@ class AssessmentController extends Controller
      * @return Request
      */
     public function storeAssessmentScores(Request $request)
-{
-    $assessmentId = $request->input('assessment_id');
-    $regiNumbers = $request->input('student_regi_no');
-    $grades = $request->input('grades');
+    {
+        $assessmentId = $request->input('assessment_id');
+        $regiNumbers = $request->input('student_regi_no');
+        $grades = $request->input('grades');
 
-    foreach ($regiNumbers as $index => $regiNumber) {
-        // check if a score exists for this assessment and student
-        $score = AssessmentScore::where('assessment_id', $assessmentId)
-            ->where('student_regi_no', $regiNumber)
-            ->first();
+        foreach ($regiNumbers as $index => $regiNumber) {
+            // check if a score exists for this assessment and student
+            $score = AssessmentScore::where('assessment_id', $assessmentId)
+                ->where('student_regi_no', $regiNumber)
+                ->first();
 
-        if (!$score) {
-            // if no score exists, create a new one
-            $score = new AssessmentScore();
-            $score->assessment_id = $assessmentId;
-            $score->student_regi_no = $regiNumber;
+            if (!$score) {
+                // if no score exists, create a new one
+                $score = new AssessmentScore();
+                $score->assessment_id = $assessmentId;
+                $score->student_regi_no = $regiNumber;
+            }
+
+            // update the score
+            $score->score = $grades[$index];
+            $score->save();
         }
 
-        // update the score
-        $score->score = $grades[$index];
-        $score->save();
+        return redirect()->back()->with('success', 'Scores Added/Updated successfully!');
     }
-
-    return redirect()->back()->with('success', 'Scores Added/Updated successfully!');
-}
 
 
 }

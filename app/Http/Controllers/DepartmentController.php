@@ -24,7 +24,6 @@ class DepartmentController extends Controller
         ]);
 
         Department::create([
-            'department_id' => 3,
             'department_name' => $request->department
         ]);
 

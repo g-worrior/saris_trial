@@ -48,6 +48,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Registration Number</th>
+                                    <th>Maximum Score</th>
                                     <th>Grade</th>
                                 </tr>
                             </thead>
@@ -55,8 +56,9 @@
                                 @foreach ($registered as $registered)
                                     <tr>
                                         <td>{{ $registered->name }}</td>
-                                        <td><input type="text" readonly class="form-control col-sm-4"
+                                        <td><input type="text" readonly class="form-control col-sm-5"
                                                 name="student_regi_no[]" value="{{ $registered->student_regi_no }}"></td>
+                                        <td>{{ $registered->maximum_score }}</td>
                                         <td><input type="number" class="form-control" name="grades[]" min="0"
                                                 max="100" value="{{ $registered->score }}"></td>
                                     </tr>
@@ -65,7 +67,7 @@
                         </table>
                     </div>
                     <div class="mt-3 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary">Add Grades</button>
+                        <button type="submit" class="btn btn-primary">Add/Update Grades</button>
                     </div>
 
 

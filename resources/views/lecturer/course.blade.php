@@ -5,11 +5,14 @@
         #enrolled {
             width: 100% !important;
         }
+        #report {
+            width: 100% !important;
+        }
     </style>
 
 @endsection
 
-@section('title', 'My Teaching Courses - ' . $course->course_code .' -')
+@section('title', 'My Teaching Courses - ' . $course->course_code . ' -')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -53,104 +56,108 @@
 
                 <div class="tab-content">
                     <div id="assessmenttab" class="tab-pane active">
-                        <table id="assessment" class="table table-bordered table-striped">
-                            <div class="row mb-2">
-                                <div class="col-sm-6">
-                                    &nbsp;
+                      <div class="card">
+                        <div class="card-body">
+                            <table id="assessment" class="table table-bordered table-striped">
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ol class="breadcrumb float-sm-right">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#add-assessment">
+                                                <i class='fa fa-plus-circle'></i><small>Add Assessment</small>
+                                            </button>
+                                        </ol>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <ol class="breadcrumb float-sm-right">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#add-assessment">
-                                            <i class='fa fa-plus-circle'></i><small>Add Assessment</small>
-                                        </button>
-                                    </ol>
-                                </div>
-                            </div>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Description</th>
-                                    <th>Type</th>
-                                    <th>Maximum Score</th>
-                                    <th>Weight</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($assessments as $key => $assessment)
+                                <thead>
                                     <tr>
-                                        <td>{{ ++$key }}</td>
-                                        <td>{{ $assessment->description }}</td>
-                                        <td>{{ $assessment->type }}</td>
-                                        <td>{{ $assessment->maximum_score }}</td>
-                                        <td>{{ $assessment->weight }}</td>
-                                        <td>
-                                            <a href={{ route('add-scores', ['encrypted_assessment_id' => Crypt::encrypt($assessment->assessment_id)]) }}
-                                                class="fa fa-eye"> <small>Grades</small></a><br>
-                                            <a href="" class="fa fa-edit" data-toggle="modal"
-                                                data-target="#edit-{{ $assessment->assessment_id }}"><small>Edit</small></a><br>
-                                            <a href="" class="fa fa-trash"data-toggle="modal"
-                                                data-target="#delete-{{ $assessment->assessment_id }}"><small>Delete</small></a>
-                                        </td>
+                                        <th>#</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                        <th>Maximum Score</th>
+                                        <th>Weight</th>
+                                        <th>Action</th>
                                     </tr>
-                                    <!--edit assessment modal -->
-                                    <div class="modal fade" id="edit-{{ $assessment->assessment_id }}" tabindex="-1"
-                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Assessment For
-                                                        {{ $course->course_code }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                </thead>
+                                <tbody>
+                                    @foreach ($assessments as $key => $assessment)
+                                        <tr>
+                                            <td>{{ ++$key }}</td>
+                                            <td>{{ $assessment->description }}</td>
+                                            <td>{{ $assessment->type }}</td>
+                                            <td>{{ $assessment->maximum_score }}</td>
+                                            <td>{{ $assessment->weight }}</td>
+                                            <td>
+                                                <a href={{ route('add-scores', ['encrypted_assessment_id' => Crypt::encrypt($assessment->assessment_id)]) }}
+                                                    class="fa fa-eye"> <small>Grades</small></a><br>
+                                                <a href="" class="fa fa-edit" data-toggle="modal"
+                                                    data-target="#edit-{{ $assessment->assessment_id }}"><small>Edit</small></a><br>
+                                                <a href="" class="fa fa-trash"data-toggle="modal"
+                                                    data-target="#delete-{{ $assessment->assessment_id }}"><small>Delete</small></a>
+                                            </td>
+                                        </tr>
+                                        <!--edit assessment modal -->
+                                        <div class="modal fade" id="edit-{{ $assessment->assessment_id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Assessment For
+                                                            {{ $course->course_code }}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+    
+                                                    @livewire('edit-assessment', ['assessmentId' => $assessment->assessment_id])
                                                 </div>
-
-                                                @livewire('edit-assessment', ['assessmentId' => $assessment->assessment_id])
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- edit assessment modal  -->
-
-                                    <!--delete assessment modal -->
-                                    <div class="modal fade" id="delete-{{ $assessment->assessment_id }}" tabindex="-1"
-                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Delete Assessment For
-                                                        {{ $course->course_code }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
+                                        <!-- edit assessment modal  -->
+    
+                                        <!--delete assessment modal -->
+                                        <div class="modal fade" id="delete-{{ $assessment->assessment_id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Assessment For
+                                                            {{ $course->course_code }}</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    {{-- form to pass the assessment id to be deleted --}}
+                                                    <form action="/access/delete-assessment" method="POST">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <h5>Are you sure you want to delete this assessment?</h5>
+                                                            <br>
+                                                            <p class="text-danger">This will delete the assessment along with is
+                                                                data including grades</p>
+                                                            <input type="text" name="assessment_id" hidden
+                                                                value="{{ $assessment->assessment_id }}">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                                {{-- form to pass the assessment id to be deleted --}}
-                                                <form action="/access/delete-assessment" method="POST">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                        <h5>Are you sure you want to delete this assessment?</h5>
-                                                        <br>
-                                                        <p class="text-danger">This will delete the assessment along with is
-                                                            data including grades</p>
-                                                        <input type="text" name="assessment_id" hidden
-                                                            value="{{ $assessment->assessment_id }}">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- delete assessment modal  -->
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        <!-- delete assessment modal  -->
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
                         <!--add assessment modal -->
                         <div class="modal fade" id="add-assessment" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -208,24 +215,27 @@
                         <!-- add assessment modal  -->
                     </div>
                     <div id="participants" class="tab-pane">
+                      <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="enrolled" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Student RegNo</th>
                                             <th>Fullname</th>
+                                            <th>Student RegNo</th>
                                             <th>Gender</th>
+                                            <th>Signature</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($students as $key => $student)
                                             <tr>
                                                 <td scope="row">{{ ++$key }}</td>
-                                                <td>{{ $student->student_regi_no }}</td>
                                                 <td>{{ $student->name }}</td>
+                                                <td>{{ $student->student_regi_no }}</td>
                                                 <td>{{ $student->gender }}</td>
+                                                <td></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -233,24 +243,40 @@
                                 </table>
                             </div>
                         </div>
+                      </div>
                     </div>
                     <div id="gradeReport" class="tab-pane">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Reg No</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    {{-- @foreach ($grades as $grade)
-                                        <td>{{ $grade-> }}</td>
-                                        <td>{{ $grade-> }}</td>
-                                    @endforeach --}}
-                                </tr>
-                            </tbody>
-                        </table>
+                       <div class="card">
+                        <div class="card-body">
+                            @if ($finalScores->isNotEmpty())
+                            <table class="table table-bordered table-striped" id="report">
+                                <thead>
+                                    <tr>
+                                        <th>Student Regi No</th>
+                                        @foreach (explode(',', $finalScores[0]->descriptions) as $description)
+                                            <th>{{ $description }}</th>
+                                        @endforeach
+                                        <th>Final Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($finalScores as $score)
+                                        <tr>
+                                            <td>{{ $score->student_regi_no }}</td>
+                                            @foreach (explode(',', $score->scores) as $s)
+                                                <td>{{ $s }}</td>
+                                            @endforeach
+                                            <td>{{ $score->final_score }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <p>No assessment scores found.</p>
+                        @endif
+                        </div>
+                       </div>
+
                     </div>
                 </div>
             </div>
@@ -278,7 +304,7 @@
             $("#enrolled").DataTable({
                 "responsive": true,
                 "paging": false,
-                "searching": false,                
+                "searching": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", ]
             }).buttons().container().appendTo('#enrolled_wrapper .col-md-6:eq(0)');
         });
@@ -286,6 +312,15 @@
     <script>
         $(document).ready(function() {
             $("#assessment").DataTable({
+                "responsive": true,
+                "paging": false,
+                "searching": false,
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#report").DataTable({
                 "responsive": true,
                 "paging": false,
                 "searching": false,

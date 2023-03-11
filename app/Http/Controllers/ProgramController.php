@@ -25,7 +25,6 @@ class ProgramController extends Controller
         ]);
 
         Program::create([
-            'program_id' => 3,
             'department_id' => $request->department_id,
             'program_code' => $request->program_code,
             'program_name' => $request->program
